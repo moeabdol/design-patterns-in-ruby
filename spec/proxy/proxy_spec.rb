@@ -66,7 +66,7 @@ describe "Proxy Pattern" do
       @account_proxy.balance
     end
 
-    it "reports correct account balance with queried" do
+    it "reports correct account balance when queried" do
       expect(@account.balance).to eq(35)
     end
   end
