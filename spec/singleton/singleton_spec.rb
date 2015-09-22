@@ -1,5 +1,6 @@
 require_relative "../../singleton/simple_logger.rb"
 require_relative "../../singleton/class_as_singleton/class_based_logger.rb"
+require_relative "../../singleton/module_as_singleton/module_based_logger.rb"
 
 def read_last_line_in_file_to_string(path)
   if File.exists?(path)
@@ -102,6 +103,52 @@ describe ClassBasedLogger do
       ClassBasedLogger.info("info occured!")
       content = \
         read_last_line_in_file_to_string("singleton/class_as_singleton/log.txt")
+      expect(content).to eq("info occured!\n")
+    end
+  end
+end
+
+describe ModuleBasedLogger do
+  after(:all) { File.delete("singleton/module_as_singleton/log.txt") }
+
+  context "no logging levels" do
+    it "does not log warining" do
+      ModuleBasedLogger.level = ClassBasedLogger::ERROR
+      ModuleBasedLogger.warning("warning occured!")
+      content = read_file_to_string("singleton/module_as_singleton/log.txt")
+      expect(content).to eq("")
+    end
+
+    it "does not log info" do
+      ModuleBasedLogger.level = ModuleBasedLogger::WARNING
+      ModuleBasedLogger.info("info occured!")
+      content = read_file_to_string("singleton/module_as_singleton/log.txt")
+      expect(content).to eq("")
+    end
+  end
+
+  context "logging levels" do
+    it "logs error" do
+      ModuleBasedLogger.level = ModuleBasedLogger::INFO
+      ModuleBasedLogger.error("error occured!")
+      content = read_last_line_in_file_to_string("singleton/" +
+                                                 "module_as_singleton/log.txt")
+      expect(content).to eq("error occured!\n")
+    end
+
+    it "logs warning" do
+      ModuleBasedLogger.level = ModuleBasedLogger::INFO
+      ModuleBasedLogger.warning("warning occured!")
+      content = read_last_line_in_file_to_string("singleton/" +
+                                                 "module_as_singleton/log.txt")
+      expect(content).to eq("warning occured!\n")
+    end
+
+    it "logs info" do
+      ModuleBasedLogger.level = ModuleBasedLogger::INFO
+      ModuleBasedLogger.info("info occured!")
+      content = read_last_line_in_file_to_string("singleton/" +
+                                                 "module_as_singleton/log.txt")
       expect(content).to eq("info occured!\n")
     end
   end
