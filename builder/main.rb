@@ -37,3 +37,11 @@ begin
 rescue Exception => e
   puts e.message
 end
+
+# use magic method to rapidly build a computer
+puts "Computer built with magic method builder"
+builder = ComputerBuilder.new
+builder.add_cd_and_dvd_and_harddisk_and_turbo
+computer = builder.computer
+puts "CPU: #{computer.motherboard.cpu.class}"
+computer.drives.each { |drive| puts "Drive: #{drive.type}" }

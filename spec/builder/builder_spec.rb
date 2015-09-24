@@ -120,4 +120,13 @@ describe ComputerBuilder do
     @computer_builder.add_dvd
     expect{ @computer_builder.computer }.to raise_error("Too many drives.")
   end
+
+  it "uses magic method to add computer components" do
+    @computer_builder.add_cd_and_dvd_and_harddisk_and_turbo
+    expect(@computer_builder.computer.drives[0].type).to eq(:cd)
+    expect(@computer_builder.computer.drives[1].type).to eq(:dvd)
+    expect(@computer_builder.computer.drives[2].type).to eq(:hard_disk)
+    expect(@computer_builder.computer.drives[2].size).to eq(100000)
+    expect(@computer_builder.computer.motherboard.cpu).to be_a(TurboCPU)
+  end
 end
