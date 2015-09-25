@@ -9,6 +9,10 @@ require_relative "../../interpreter/and"
 require_relative "../../interpreter/parser"
 
 describe Expression do
+  it "parses expression correctly" do
+    ast = bigger(1024) & name("*.lock") & writable
+    expect(ast.evaluate(".")).to match(%w(Gemfile.lock))
+  end
 end
 
 describe All do
